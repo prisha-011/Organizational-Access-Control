@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+    <style>
+        /* Password container for eye icon */
+        .password-container {
+            position: relative;
+            width: 100%;
+        }
+
+        .password-container input {
+            width: 100%;
+            padding-right: 30px; /* space for icon */
+            box-sizing: border-box;
+            font-size: 16px;
+            padding: 10px;
+        }
+
+        /* Minimal eye icon style like other form */
+        .eye-icon {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            font-size: 16px;
+            color: #555;
+            user-select: none;
+        }
+
+        .eye-icon:hover {
+            color: #222;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>Login</h2>
+        <form th:action="@{/login}" method="post">
+            <div class="input-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+
+            <!-- Password field with minimal eye icon -->
+            <div class="input-group password-container">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+                <span id="togglePassword" class="eye-icon">&#128065;</span>
+            </div>
+
+            <button type="submit">Login</button>
+        </form>
+        <p th:text="${error}" style="color:red;"></p>
+    </div>
+
+    <script>
+        const togglePassword = document.querySelector('#togglePassword');
+        const password = document.querySelector('#password');
+
+        togglePassword.addEventListener('click', () => {
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            password.setAttribute('type', type);
+
+
+            togglePassword.textContent = type === 'password' ? '\u{1F441}' : '\u{1F576}';
+        });
+    </script>
+</body>
+</html>

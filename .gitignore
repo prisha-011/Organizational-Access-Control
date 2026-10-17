@@ -1,0 +1,20 @@
+# Old copies and backups
+backend -/
+frontend -/
+*.zip
+
+# IDE and tool folders
+.idea/
+.vscode/
+.github/
+
+# Build output and dependencies
+node_modules/
+dist/
+build/
+bin/
+.gradle/
+
+# Secrets
+.env
+.env.*

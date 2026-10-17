@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Update User</title>
+
+  <style>
+    :root{
+      --bg:#f3f6fb;
+      --card:#ffffff;
+      --accent:#4A6CF7;
+      --muted:#6b7280;
+      --input-bg:#fafbfd;
+      --radius:10px;
+      --gap:16px;
+      --maxw:1100px;
+    }
+
+    *{box-sizing:border-box;}
+
+    body{
+      margin:0;
+      font-family:"Segoe UI",Roboto,"Helvetica Neue",Arial;
+      background:var(--bg);
+      color:#111827;
+    }
+
+    .page{
+      max-width:var(--maxw);
+      margin:36px auto;
+      padding:20px;
+    }
+
+    .card{
+      background:var(--card);
+      border-radius:var(--radius);
+      padding:28px;
+      box-shadow:0 10px 30px rgba(16,24,40,0.06);
+    }
+
+    h2{
+      text-align:center;
+      margin:0 0 20px 0;
+      font-size:22px;
+    }
+
+    .grid-3{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:var(--gap);
+      margin-bottom:18px;
+    }
+
+    .grid-2{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:var(--gap);
+      margin-bottom:18px;
+    }
+
+    label{
+      display:block;
+      margin-bottom:6px;
+      font-size:13px;
+      font-weight:600;
+      color:var(--muted);
+    }
+
+    input,textarea{
+      width:100%;
+      padding:12px 14px;
+      border-radius:10px;
+      border:1px solid #e6e9ef;
+      background:var(--input-bg);
+      font-size:14px;
+      transition:all .12s ease;
+    }
+
+    input:focus,textarea:focus{
+      border-color:var(--accent);
+      background:white;
+      box-shadow:0 6px 18px rgba(74,108,247,0.12);
+      outline:none;
+    }
+
+    textarea{
+      min-height:90px;
+      resize:vertical;
+    }
+
+    small{
+      display:block;
+      font-size:12px;
+      text-align:right;
+      color:gray;
+      margin-top:4px;
+    }
+
+    .password-wrapper{
+      position:relative;
+    }
+
+    .password-wrapper span{
+      position:absolute;
+      right:12px;
+      top:50%;
+      transform:translateY(-50%);
+      cursor:pointer;
+      font-size:18px;
+      color:#6b7280;
+    }
+
+    .actions{
+      display:flex;
+      justify-content:flex-end;
+      gap:14px;
+      margin-top:12px;
+    }
+
+    .btn{
+      padding:12px 18px;
+      border-radius:10px;
+      font-weight:700;
+      cursor:pointer;
+      font-size:14px;
+      border:none;
+    }
+
+    .btn-primary{
+      background:linear-gradient(135deg,var(--accent),#2643e9);
+      color:white;
+      box-shadow:0 8px 20px rgba(38,67,233,0.12);
+    }
+
+    .btn-secondary{
+      background:#f3f4f6;
+      color:#0f172a;
+      border:1px solid #e6e9ef;
+    }
+
+    @media(max-width:900px){
+      .grid-3{grid-template-columns:repeat(2,1fr);}
+    }
+
+    @media(max-width:600px){
+      .grid-3,.grid-2{grid-template-columns:1fr;}
+    }
+
+  </style>
+</head>
+
+<body>
+<div class="page">
+  <div class="card">
+
+    <h2>Update User</h2>
+
+    <form th:action="@{/api/tasks/update/{id}(id=${user.id})}" th:object="${user}" method="post">
+
+      <input type="hidden" th:field="*{id}"/>
+
+      <!-- Row 1 -->
+      <div class="grid-3">
+        <div>
+          <label>First Name</label>
+          <input type="text" th:field="*{firstName}" placeholder="First name" required>
+        </div>
+
+        <div>
+          <label>Middle Name</label>
+          <input type="text" th:field="*{middleName}" placeholder="Middle name">
+        </div>
+
+        <div>
+          <label>Last Name</label>
+          <input type="text" th:field="*{lastName}" placeholder="Last name" required>
+        </div>
+      </div>
+
+      <!-- Row 2 -->
+      <div class="grid-3">
+        <div>
+          <label>Age</label>
+          <input type="number" th:field="*{age}" placeholder="Age">
+        </div>
+
+        <div>
+          <label>Email</label>
+          <input type="email" th:field="*{email}" placeholder="name@domain.com">
+        </div>
+
+        <div>
+          <label>Mobile Number</label>
+          <input type="text"
+                 th:field="*{mobileNo}"
+                 maxlength="10"
+                 placeholder="Enter 10-digit mobile number"
+                 oninput="this.value = this.value.replace(/[^0-9]/g,'');">
+        </div>
+      </div>
+
+      <!-- Row 3 -->
+      <div class="grid-2">
+        <div>
+          <label>Username</label>
+          <input type="text" th:field="*{userName}" placeholder="Choose username">
+        </div>
+
+        <div>
+          <label>Password</label>
+          <div class="password-wrapper">
+            <input type="password" id="password" th:field="*{password}" placeholder="Password" style="padding-right:40px;">
+            <span id="toggleIcon" onclick="togglePassword()">👁</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Address -->
+      <div style="margin-bottom:18px;">
+        <label>Address</label>
+        <textarea id="address" th:field="*{address}" maxlength="1000" placeholder="Enter address"></textarea>
+        <small id="address-count">0 / 1000</small>
+      </div>
+
+      <!-- Task -->
+      <div style="margin-bottom:18px;">
+        <label>Task</label>
+        <input type="text" id="task" th:field="*{task}" maxlength="1000" placeholder="Task / Notes">
+        <small id="task-count">0 / 1000</small>
+      </div>
+
+      <div class="actions">
+        <a th:href="@{/api/tasks/all-users}" class="btn btn-secondary">Cancel</a>
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+      </div>
+
+    </form>
+  </div>
+</div>
+
+<script>
+  function togglePassword() {
+    const input = document.getElementById("password");
+    const icon = document.getElementById("toggleIcon");
+
+    if (input.type === "password") {
+      input.type = "text";
+      icon.textContent = "⊘";
+    } else {
+      input.type = "password";
+      icon.textContent = "👁";
+    }
+  }
+
+  function updateCount(fieldId, countId) {
+    const field = document.getElementById(fieldId);
+    const count = document.getElementById(countId);
+
+    count.textContent = `${field.value.length} / 1000`;
+
+    field.addEventListener("input", () => {
+      count.textContent = `${field.value.length} / 1000`;
+    });
+  }
+
+  updateCount("address", "address-count");
+  updateCount("task", "task-count");
+</script>
+
+</body>
+</html>

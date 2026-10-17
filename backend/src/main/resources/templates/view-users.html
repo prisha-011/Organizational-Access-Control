@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>All Users</title>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: #f3f4f6;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 40px auto;
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 26px;
+            color: #1f2937;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 25px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        thead {
+            background: #2563eb;
+            color: white;
+        }
+
+        th, td {
+            padding: 14px 16px;
+            text-align: left;
+            font-size: 15px;
+        }
+
+        tbody tr:nth-child(even) {
+            background: #f9fafb;
+        }
+
+        tbody tr:hover {
+            background: #eef2ff;
+            transition: 0.2s ease-in-out;
+        }
+
+        th {
+            font-weight: 600;
+        }
+
+        .actions-btns {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 8px 14px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-update {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .btn-update:hover {
+            background: #2563eb;
+        }
+
+        .btn-delete {
+            background: #dc2626;
+            color: white;
+        }
+
+        .btn-delete:hover {
+            background: #b91c1c;
+        }
+
+        .back-link {
+            display: inline-block;
+            padding: 10px 18px;
+            background: #4b5563;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        .back-link:hover {
+            background: #374151;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <h2>All Users</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>UserName</th>
+                <th>Email</th>
+                <th>Mobile</th>
+                <th>Actions</th> <!-- New Column -->
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr th:each="u : ${users}">
+                <td th:text="${u.id}"></td>
+                <td th:text="${u.firstName + ' ' + u.lastName}"></td>
+                <td th:text="${u.userName}"></td>
+                <td th:text="${u.email}"></td>
+                <td th:text="${u.mobileNo}"></td>
+
+                <!-- Action buttons -->
+                <td>
+                    <div class="actions-btns">
+                        <a th:if="${u.enabled}" 
+                        th:href="@{'/api/tasks/update/' + ${u.id}}" 
+                        class="btn btn-update">Update</a>
+
+                        <a th:if="${u.enabled}" 
+                        th:href="@{'/api/tasks/disable/' + ${u.id}}" 
+                        class="btn btn-delete">Delete</a>
+                        <a th:if="${!u.enabled}" 
+                        th:href="@{'/api/tasks/restore/' + ${u.id}}" 
+                        class="btn btn-update" 
+                        style="background:#059669;">Restore</a>
+
+                    </div>
+                </td>
+
+            </tr>
+        </tbody>
+    </table>
+
+    <a th:href="@{/api/tasks/dashboard}" class="back-link">← Back to Dashboard</a>
+
+</div>
+
+</body>
+</html>
