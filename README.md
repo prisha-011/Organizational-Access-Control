@@ -183,4 +183,4 @@ From the `backend/` folder:
 
 ## Author
 
-**Prisha** · [GitHub](https://github.com/prisha-011)
+**Prisha Dwivedi** · [GitHub](https://github.com/prisha-011)
